@@ -3,6 +3,7 @@ import axios from "axios";
 import TextInput from "./TextInput";
 import TextArea from "./TextArea";
 import "./Style/Search.css";
+import Loading from "./Loading";
 interface Result {
   package: {
     name: string;
@@ -11,7 +12,7 @@ interface Result {
 }
 
 const Search: React.FC = () => {
-  const [term, setTerm] = useState<string>("");
+  const [inp, setInp] = useState<string>("");
   const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
@@ -33,7 +34,6 @@ const Search: React.FC = () => {
         : [favPackageData];
       localStorage.setItem("favpackage", JSON.stringify(newData));
 
-      // Clear selected package and textarea content
       setSelectedPackage(null);
       setTextAreaContent("");
     }
@@ -41,17 +41,16 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     const debouncedSearch = setTimeout(() => {
-      if (term.trim() !== "") {
+      if (inp.trim() !== "") {
         setLoading(true);
         axios
-          .get(`https://api.npms.io/v2/search?q=${term}`)
+          .get(`https://api.npms.io/v2/search?q=${inp}`)
           .then((response) => {
             setResults(response.data.results);
+            setLoading(false);
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
-          })
-          .finally(() => {
             setLoading(false);
           });
       } else {
@@ -62,7 +61,7 @@ const Search: React.FC = () => {
     return () => {
       clearTimeout(debouncedSearch);
     };
-  }, [term]);
+  }, [inp]);
 
   return (
     <div>
@@ -70,31 +69,34 @@ const Search: React.FC = () => {
         <div className="h-full bg-white h-[95vh] w-[80%] p-4 border-4 shadow-lg p-8">
           <TextInput
             placeholder="Search for packages..."
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
+            value={inp}
+            onChange={(e) => setInp(e.target.value)}
           />
-          {loading && <p>Loading...</p>}
-
           <label className="block mb-2 text-sm font-medium text-gray-900 mt-8">
             Results
           </label>
-          <ul className="package-content mt-8">
-            {results.map((result) => (
-              <li key={result.package.name} className="mb-4">
-                <label className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="package"
-                    value={result.package.name}
-                    checked={selectedPackage === result.package.name}
-                    onChange={() => setSelectedPackage(result.package.name)}
-                    className="form-radio text-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <span className="text-gray-800">{result.package.name}</span>
-                </label>
-              </li>
-            ))}
-          </ul>
+          {loading ? (
+            <Loading />
+          ) : (
+            <ul className="package-content mt-8">
+              {results.map((result) => (
+                <li key={result.package.name} className="mb-4">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="package"
+                      value={result.package.name}
+                      checked={selectedPackage === result.package.name}
+                      onChange={() => setSelectedPackage(result.package.name)}
+                      className="form-radio text-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    />
+                    <span className="text-gray-800">{result.package.name}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          )}
+
           <div>
             <TextArea
               placeholder="Why is this your Fav......"
@@ -108,7 +110,6 @@ const Search: React.FC = () => {
               Submit
             </button>
           </div>
-          {selectedPackage && <p>Selected Package: {selectedPackage}</p>}
         </div>
       </div>
     </div>
