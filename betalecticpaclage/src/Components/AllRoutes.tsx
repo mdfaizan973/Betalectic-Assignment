@@ -7,8 +7,8 @@ export default function AllRoutes() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Search />} />
-        <Route path="/fav" element={<Fav />} />
+        <Route path="/" element={<Fav />} />
+        <Route path="/packages" element={<Search />} />
       </Routes>
     </div>
   );
