@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiFillEdit, AiFillDelete, AiFillEye } from "react-icons/ai";
 
 interface Package {
@@ -50,7 +50,7 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
     setSInglePackage(selectedPackage);
   };
 
-  console.log("singlepackage", singlepackage);
+  const openEditmodal = () => {};
   return (
     <div className="container mx-auto p-8">
       <table className="min-w-full bg-white border border-gray-300">
@@ -71,7 +71,10 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
                 >
                   <AiFillEye />
                 </button>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={openEditmodal}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
                   <AiFillEdit />
                 </button>
                 <button
@@ -89,6 +92,13 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
                       Are you sure you want to delere?
                     </p>
                     <div className="flex justify-center space-x-4">
+                      <button className="bg-red-500 text-white px-4 py-2 rounded">
+                        <form method="dialog">
+                          <button className="btn btn-sm btn-circle btn-ghost ">
+                            Cancel
+                          </button>
+                        </form>
+                      </button>
                       <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost ">
                           {" "}
@@ -100,13 +110,6 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
                           </button>
                         </button>
                       </form>
-                      <button className="bg-red-500 text-white px-4 py-2 rounded">
-                        <form method="dialog">
-                          <button className="btn btn-sm btn-circle btn-ghost ">
-                            Cancel
-                          </button>
-                        </form>
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -126,7 +129,7 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
             Fav Package : {singlepackage?.package}
           </h3>
           <p className="text-gray-600 text-xl">
-            Why Fav : {singlepackage?.note}
+            Why it's Fav : {singlepackage?.note}
           </p>
         </div>
       </dialog>

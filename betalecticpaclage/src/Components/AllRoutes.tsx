@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Search from "./Search";
 import Fav from "./Fav";
