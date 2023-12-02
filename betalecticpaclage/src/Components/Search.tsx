@@ -1,9 +1,11 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import TextInput from "./TextInput";
 import TextArea from "./TextArea";
 import "./Style/Search.css";
 import Loading from "./Loading";
+import { Link as RouterLink } from "react-router-dom";
+
 interface Result {
   package: {
     name: string;
@@ -65,6 +67,12 @@ const Search: React.FC = () => {
 
   return (
     <div>
+      <RouterLink to="/">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-4 rounded">
+          Go to fav
+        </button>
+      </RouterLink>
+
       <div className="p-4 flex items-center justify-center">
         <div className="h-full bg-white h-[95vh] w-[80%] p-4 border-4 shadow-lg p-8">
           <TextInput

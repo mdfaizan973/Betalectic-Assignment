@@ -13,6 +13,9 @@ interface FavTableProps {
 const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
   const [favPackages, setFavPackages] = useState<Package[]>(packageData);
   const [singlepackage, setSInglePackage] = useState<Package | null>(null);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [newNote, setNewNote] = useState<string>("");
+  const [pack, setPack] = useState<string>("");
   // Deletepackage
   const deletePackage = (index: number) => {
     const deletePackages = [...favPackages];
@@ -50,7 +53,37 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
     setSInglePackage(selectedPackage);
   };
 
-  const openEditmodal = () => {};
+  const openEditmodal = (index: number) => {
+    const modalElement = document.getElementById(
+      "edits_modal"
+    ) as HTMLDialogElement | null;
+
+    if (modalElement) {
+      modalElement.showModal();
+    } else {
+      console.error("Modal element not found");
+    }
+
+    setEditIndex(index);
+    setNewNote(favPackages[index].note);
+    setPack(favPackages[index].package);
+  };
+  const handleSaveClick = () => {
+    if (editIndex !== null) {
+      setFavPackages((prevPackages) => {
+        const updatedPackages = [...prevPackages];
+        updatedPackages[editIndex] = {
+          ...updatedPackages[editIndex],
+          note: newNote,
+        };
+        return updatedPackages;
+      });
+
+      // Reset edit state
+      setEditIndex(null);
+      setNewNote("");
+    }
+  };
   return (
     <div className="container mx-auto p-8">
       <table className="min-w-full bg-white border border-gray-300">
@@ -72,7 +105,7 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
                   <AiFillEye />
                 </button>
                 <button
-                  onClick={openEditmodal}
+                  onClick={() => openEditmodal(i)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
                   <AiFillEdit />
@@ -132,6 +165,36 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
             Why it's Fav : {singlepackage?.note}
           </p>
         </div>
+      </dialog>
+
+      {/* Edit dialog */}
+      <dialog id="edits_modal" className="modal w-fit p-6 rounded-xl">
+        <form method="dialog">
+          <button className="btn btn-sm btn-circle btn-ghost ">X</button>
+        </form>
+        <p className="text-sm">
+          Package: <span className="text-green-600 font-bold">{pack}</span>
+        </p>
+        <textarea
+          id="message"
+          rows={4}
+          className="block p-10 w-full text-sm rounded-lg border border-gray-300 "
+          // placeholder={placeholder}
+          value={newNote}
+          onChange={(e) => setNewNote(e.target.value)}
+        ></textarea>
+
+        <form method="dialog">
+          <button className="btn btn-sm btn-circle btn-ghost ">
+            {" "}
+            <button
+              onClick={handleSaveClick}
+              className="bg-green-500 mt-4 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+            >
+              Save
+            </button>
+          </button>
+        </form>
       </dialog>
     </div>
   );
