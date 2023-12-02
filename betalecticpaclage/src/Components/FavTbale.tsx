@@ -3,6 +3,7 @@ import { AiFillEdit, AiFillDelete, AiFillEye } from "react-icons/ai";
 
 interface Package {
   package: string;
+  note: string;
 }
 
 interface FavTableProps {
@@ -11,7 +12,8 @@ interface FavTableProps {
 
 const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
   const [favPackages, setFavPackages] = useState<Package[]>(packageData);
-
+  const [singlepackage, setSInglePackage] = useState<Package | null>(null);
+  // Deletepackage
   const deletePackage = (index: number) => {
     const deletePackages = [...favPackages];
     deletePackages.splice(index, 1);
@@ -31,6 +33,24 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
     }
   };
 
+  // viewPackage
+  const openPackage = (index: number) => {
+    const modalElement = document.getElementById(
+      "view_modal"
+    ) as HTMLDialogElement | null;
+
+    if (modalElement) {
+      modalElement.showModal();
+    } else {
+      console.error("Modal element not found");
+    }
+
+    // Showing data
+    const selectedPackage = favPackages[index];
+    setSInglePackage(selectedPackage);
+  };
+
+  console.log("singlepackage", singlepackage);
   return (
     <div className="container mx-auto p-8">
       <table className="min-w-full bg-white border border-gray-300">
@@ -45,7 +65,10 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
             <tr key={i}>
               <td className="py-2 px-4 border-b">{ele.package}</td>
               <td className="py-2 px-4 border-b border-l flex space-x-2">
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={() => openPackage(i)}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                >
                   <AiFillEye />
                 </button>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -92,6 +115,21 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
           ))}
         </tbody>
       </table>
+      {/* view dialog */}
+      <dialog id="view_modal" className="modal w-fit p-4 rounded-xl">
+        <form method="dialog">
+          <button className="btn btn-sm btn-circle btn-ghost ">X</button>
+        </form>
+
+        <div className="bg-white p-16 rounded">
+          <h3 className="text-2xl font-semibold mb-2">
+            Fav Package : {singlepackage?.package}
+          </h3>
+          <p className="text-gray-600 text-xl">
+            Why Fav : {singlepackage?.note}
+          </p>
+        </div>
+      </dialog>
     </div>
   );
 };
