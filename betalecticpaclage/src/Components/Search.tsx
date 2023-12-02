@@ -1,17 +1,3 @@
-// import React from "react";
-// import TextArea from "./TextArea";
-// import TextInput from "./TextInput";
-
-// export default function Search() {
-//   return (
-//     <div className="p-4 flex items-center justify-center">
-//       <div className="h-full bg-white h-[95vh] w-[80%] p-4 border-4 shadow-lg p-8">
-//         <TextInput />
-//         <TextArea />
-//       </div>
-//     </div>
-//   );
-// }
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextInput from "./TextInput";
@@ -72,7 +58,7 @@ const Search: React.FC = () => {
       } else {
         setResults([]);
       }
-    }, 500);
+    }, 1500);
 
     return () => {
       clearTimeout(debouncedSearch);
@@ -107,7 +93,7 @@ const Search: React.FC = () => {
           </ul>
           <div>
             <TextArea
-              placeholder="Write something..."
+              placeholder="Why is this your Fav......"
               value={textAreaContent}
               onChange={handleTextAreaChange}
             />
