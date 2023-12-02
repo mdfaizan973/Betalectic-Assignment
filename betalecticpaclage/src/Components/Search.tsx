@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextInput from "./TextInput";
 import TextArea from "./TextArea";
-
+import "./Style/Search.css";
 interface Result {
   package: {
     name: string;
@@ -23,7 +23,6 @@ const Search: React.FC = () => {
 
   const handleSubmission = () => {
     if (selectedPackage) {
-      // Store data in local storage
       const favPackageData = {
         package: selectedPackage,
         note: textAreaContent,
@@ -75,18 +74,23 @@ const Search: React.FC = () => {
             onChange={(e) => setTerm(e.target.value)}
           />
           {loading && <p>Loading...</p>}
-          <ul>
+
+          <label className="block mb-2 text-sm font-medium text-gray-900 mt-8">
+            Results
+          </label>
+          <ul className="package-content mt-8">
             {results.map((result) => (
-              <li key={result.package.name}>
-                <label>
+              <li key={result.package.name} className="mb-4">
+                <label className="flex items-center space-x-2 cursor-pointer">
                   <input
                     type="radio"
                     name="package"
                     value={result.package.name}
                     checked={selectedPackage === result.package.name}
                     onChange={() => setSelectedPackage(result.package.name)}
+                    className="form-radio text-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
-                  {result.package.name}
+                  <span className="text-gray-800">{result.package.name}</span>
                 </label>
               </li>
             ))}
@@ -97,7 +101,12 @@ const Search: React.FC = () => {
               value={textAreaContent}
               onChange={handleTextAreaChange}
             />
-            <button onClick={handleSubmission}>Submit</button>
+            <button
+              className="float-right bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4"
+              onClick={handleSubmission}
+            >
+              Submit
+            </button>
           </div>
           {selectedPackage && <p>Selected Package: {selectedPackage}</p>}
         </div>

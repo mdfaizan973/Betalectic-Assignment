@@ -15,7 +15,7 @@ const TextArea: React.FC<TextAreaProps> = ({
     <div>
       <label
         htmlFor="message"
-        className="block mb-2 text-sm font-medium text-gray-900 "
+        className="block mb-2 text-sm font-medium text-gray-900 mt-8"
       >
         Why is this your Fav?
       </label>
