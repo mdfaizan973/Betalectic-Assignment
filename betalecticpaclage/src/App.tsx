@@ -1,10 +1,8 @@
-import React from "react";
-import Search from "./Components/Search";
-
+import AllRoutes from "./Components/AllRoutes";
 export default function App() {
   return (
     <div>
-      <Search />
+      <AllRoutes />
     </div>
   );
 }
