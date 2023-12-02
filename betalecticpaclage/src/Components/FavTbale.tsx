@@ -172,6 +172,7 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost ">X</button>
         </form>
+        <h4 className="text-xl">Edit Discription</h4>
         <p className="text-sm">
           Package: <span className="text-green-600 font-bold">{pack}</span>
         </p>

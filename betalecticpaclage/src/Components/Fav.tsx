@@ -15,7 +15,7 @@ export default function Fav() {
   return (
     <div>
       <h3 className="text-3xl mt-5 ml-5 mb-5 font-medium">
-        Welcome to Fovrite NPM Packages
+        Welcome to Favourite NPM Packages
       </h3>
       {packageData.length > 0 ? (
         <div className="p-4 flex items-center justify-center">
