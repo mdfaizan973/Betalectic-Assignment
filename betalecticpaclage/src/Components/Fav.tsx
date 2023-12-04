@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import Favbtn from "./Favbtn";
 import FavTbale from "./FavTbale";
 export default function Fav() {

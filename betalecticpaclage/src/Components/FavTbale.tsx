@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AiFillEdit, AiFillDelete, AiFillEye } from "react-icons/ai";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface Package {
   package: string;
   note: string;
@@ -22,7 +24,18 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
     deletePackages.splice(index, 1);
     setFavPackages(deletePackages);
     localStorage.setItem("favpackage", JSON.stringify(deletePackages));
+    toast.error("Package Removed!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
+
+  if (favPackages.length !== 0) {
+    console.log("favPackages");
+  } else {
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
+  }
 
   const openModaleDelte = () => {
     const modalElement = document.getElementById(
@@ -76,6 +89,9 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
           ...updatedPackages[editIndex],
           note: newNote,
         };
+        toast.success("Package Updated! Click on View btn!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         return updatedPackages;
       });
 
@@ -86,6 +102,7 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
   };
   return (
     <div className="container mx-auto p-8">
+      <ToastContainer />
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr>
@@ -122,7 +139,7 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
                 <div className="container mx-auto p-16">
                   <div className="bg-white p-8">
                     <p className="mb-4 text-xl">
-                      Are you sure you want to delere?
+                      Are you sure you want to delete?
                     </p>
                     <div className="flex justify-center space-x-4">
                       <button className="bg-red-500 text-white px-4 py-2 rounded">
@@ -134,7 +151,6 @@ const FavTable: React.FC<FavTableProps> = ({ packageData }) => {
                       </button>
                       <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost ">
-                          {" "}
                           <button
                             onClick={() => deletePackage(i)}
                             className="bg-green-500 text-white px-4 py-2 rounded"

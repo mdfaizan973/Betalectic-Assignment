@@ -5,7 +5,8 @@ import TextArea from "./TextArea";
 import "./Style/Search.css";
 import Loading from "./Loading";
 import { Link as RouterLink } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface Result {
   package: {
     name: string;
@@ -35,7 +36,9 @@ const Search: React.FC = () => {
         ? [...JSON.parse(existingData), favPackageData]
         : [favPackageData];
       localStorage.setItem("favpackage", JSON.stringify(newData));
-
+      toast.success("Package Added!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       setSelectedPackage(null);
       setTextAreaContent("");
     }
@@ -67,6 +70,7 @@ const Search: React.FC = () => {
 
   return (
     <div>
+      <ToastContainer />
       <RouterLink to="/">
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 m-4 rounded">
           Go to fav
